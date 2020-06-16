@@ -2,7 +2,7 @@
   <div class="q-pa-lg">
     <h4 class="q-px-none q-mt-md q-mb-xl">Atualizar dados de estatística</h4>
       <div class="row q-pb-xs">
-        <div class="col-12 q-pa-md">
+        <div class="col-12 q-py-md">
           <q-card >
             <q-card-section>
               <div class="row">
@@ -10,6 +10,12 @@
                   <h6 class="q-ma-none">Adicionar Novo Registro</h6>
               </div>
               <div class="col text-right q-pa-sm">
+                  <q-btn
+                    icon="publish"
+                    class="rounded-button q-mr-md"
+                    color="green"
+                    @click="abreModal"
+                    label="Importar dados"/>
                  <q-btn
                     class="rounded-button"
                     color="blue"
@@ -58,6 +64,7 @@
                     <q-radio v-model="estatistica.tipoContagem" val="obitos" label="Óbitos" />
                     <q-radio v-model="estatistica.tipoContagem" val="confirmados" label="Confirmados" />
                     <q-radio v-model="estatistica.tipoContagem" val="suspeitos" label="Suspeitos" />
+                    <q-radio v-model="estatistica.tipoContagem" val="recuperados" label="Recuperados" />
                   </div>
                 </div>
               </div>
@@ -97,7 +104,7 @@
             </div>
           </q-card-section>
            <div class="row badges">
-            <div class="col-4 text-center">
+            <div class="col-3 text-center">
               <div class="container">
                   <div class="col">
                     <q-badge color="grey-4" text-color="black">
@@ -109,7 +116,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-4 text-center">
+            <div class="col-3 text-center">
               <div class="container">
                   <div class="col">
                     <q-badge color="grey-4" text-color="black">
@@ -121,7 +128,7 @@
                   </div>
               </div>
             </div>
-            <div class="col-4 text-center">
+            <div class="col-3 text-center">
               <div class="container">
                   <div class="col">
                     <q-badge color="grey-4" text-color="black">
@@ -133,12 +140,25 @@
                   </div>
               </div>
             </div>
+            <div class="col-3 text-center">
+              <div class="container">
+                  <div class="col">
+                    <q-badge color="grey-4" text-color="black">
+                      {{ estatisticaBairro.recuperados }}
+                    </q-badge>
+                  </div>
+                  <div class="col q-pt-sm">
+                    <span>Recuperados</span>
+                  </div>
+              </div>
+            </div>
             </div>
         </q-card>
       </div>
     </div>
       </q-card-section>
     </q-card >
+    <EstatisticasImportar v-if="mostraModalImportar" @fechaModal="fechaModal"/>
   </div>
 </template>
 
@@ -146,12 +166,16 @@
 // import { Loading } from 'quasar'
 // import Historico from './Historico'
 import { date } from 'quasar'
+import EstatisticasImportar from './EstatisticasImportar'
 
 export default {
   name: 'UsuariosForm',
-  components: {},
+  components: {
+    EstatisticasImportar
+  },
   data () {
     return {
+      busca: '',
       estatistica: {
         quantidade: 0,
         tipoContagem: '',
@@ -159,11 +183,13 @@ export default {
         idBairro: '',
         idUsuario: ''
       },
+      mostraModalImportar: false,
       estatisticaBairros: [],
       estatisticaBairrosDados: [],
       optBairros: []
     }
   },
+
   methods: {
     async salvar () {
       this.estatistica.idUsuario = 9 // TO-DO: Ajustar para pegar o usuário da sessão.
@@ -197,7 +223,7 @@ export default {
     },
 
     async obtemDadosBairro () {
-      const response = await this.axios.get('/admin/estatistica-bairro')
+      const response = await this.axios.get('/estatistica-bairro')
       response.data.forEach(dadosBairro => {
         dadosBairro.atualizadoEm = date.formatDate(dadosBairro.atualizadoEm, 'DD/MM/YYYY')
         dadosBairro.atualizadoEm = dadosBairro.atualizadoEm === '31/12/1999' ? 'Nenhum dado registrado' : 'Última atualização: ' + dadosBairro.atualizadoEm
@@ -227,6 +253,18 @@ export default {
         return estatistica.contagemBusca > 0
       })
       this.estatisticaBairros.sort(this.compare).reverse()
+    },
+
+    abreModal () {
+      console.log('abre modal')
+      this.mostraModalImportar = true
+      console.log(this.mostraModalImportar)
+    },
+
+    fechaModal () {
+      console.log('bbb')
+      this.mostraModalImportar = false
+      console.log(this.mostraModalImportar)
     }
   },
 

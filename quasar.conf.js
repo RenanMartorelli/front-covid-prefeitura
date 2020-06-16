@@ -9,7 +9,8 @@ module.exports = function (ctx) {
     boot: [
       'axios',
       'window',
-      'sweet-alert'
+      'sweet-alert',
+      'highcharts'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -44,6 +45,7 @@ module.exports = function (ctx) {
       // * true   - Import everything from Quasar
       //            (not treeshaking Quasar; biggest bundle size; convenient)
       all: 'auto',
+      cssAddon: true,
 
       components: [
         'QCard',

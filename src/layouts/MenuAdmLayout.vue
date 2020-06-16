@@ -24,12 +24,12 @@
           <q-btn round dense flat color="white" @click="logout" icon="exit_to_app">
             <q-tooltip>Sair</q-tooltip>
           </q-btn>
-          <q-btn round dense flat color="white" icon="notifications">
+          <!-- <q-btn round dense flat color="white" icon="notifications">
             <q-badge color="red" text-color="white" floating>
               2
             </q-badge>
             <q-tooltip>Notificações</q-tooltip>
-          </q-btn>
+          </q-btn> -->
         </div>
       </q-toolbar>
     </q-header>
@@ -56,11 +56,14 @@
 
           <div class="q-mt-md">
             <div class="flex flex-center q-gutter-xs">
-              <a class="GNL__drawer-footer-link" href="javascript:void(0)" aria-label="Privacy">Privacy</a>
+              <a class="GNL__drawer-footer-link" href="javascript:void(0)" aria-label="Privacy">Privacidade</a>
               <span> · </span>
-              <a class="GNL__drawer-footer-link" href="javascript:void(0)" aria-label="Terms">Terms</a>
+              <a class="GNL__drawer-footer-link" href="javascript:void(0)" aria-label="Terms">Termos</a>
               <span> · </span>
-              <a class="GNL__drawer-footer-link" href="javascript:void(0)" aria-label="About">About Google</a>
+              <a class="GNL__drawer-footer-link" href="www.lliege.com.br" aria-label="About">LLIÈGE</a>
+            </div>
+            <div class="logo-lliege q-pa-xl justify-center">
+              <q-img src="../../src/assets/logo_lliege_4.png"/>
             </div>
           </div>
         </q-list>
@@ -97,6 +100,9 @@ export default {
       ]
     }
   },
+  mounted () {
+    if (!this.$store.state.global.logado) this.$router.push('login')
+  },
   methods: {
     onClear () {
       this.exactPhrase = ''
@@ -114,6 +120,7 @@ export default {
     },
     logout () {
       // remove auth_token do local storage
+      this.$store.dispatch('deslogar')
       this.$router.push('/login')
     }
   }
@@ -121,6 +128,11 @@ export default {
 </script>
 
 <style lang="sass">
+
+.logo-lliege
+  opacity: 0.6
+  width: 100%
+
 .GNL
   &__toolbar
     height: 64px

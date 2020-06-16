@@ -10,12 +10,21 @@ const routes = [
       { path: '/historico', component: () => import('pages/Historico.vue') },
       { path: '/bairros', component: () => import('pages/Bairros.vue') },
       { path: '/noticias', component: () => import('pages/Noticias.vue') },
-      { path: '/estatisticas', component: () => import('pages/Estatisticas.vue') }
+      { path: '/estatisticas', component: () => import('pages/Estatisticas.vue') },
+      { path: '/painel', component: () => import('pages/publicas/Dados.vue') }
     ]
   },
   {
     path: '/login',
     component: () => import('components/Login.vue')
+  },
+  {
+    path: '/',
+    component: () => import('layouts/Painel.vue'),
+    children: [
+      { path: '/comunicados', component: () => import('pages/publicas/Comunicados.vue') },
+      { path: '/', component: () => import('pages/publicas/Dados.vue') }
+    ]
   }
 
 ]

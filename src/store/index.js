@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { global } from './global'
+import createPersistedState from 'vuex-persistedstate'
 
 // import example from './module-example'
 
@@ -16,8 +18,9 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    plugins: [createPersistedState()],
     modules: {
-      // example
+      global
     },
 
     // enable strict mode (adds overhead!)

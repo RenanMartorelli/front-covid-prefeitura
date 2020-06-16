@@ -209,7 +209,7 @@ export default {
     },
 
     async obterNoticias () {
-      const response = await this.axios.get('/admin/mensagem')
+      const response = await this.axios.get('/mensagem')
       response.data.forEach(noticia => {
         noticia.updatedAt = date.formatDate(noticia.updatedAt, 'DD/MM/YYYY')
         noticia.createdAt = date.formatDate(noticia.createdAt, 'DD/MM/YYYY')

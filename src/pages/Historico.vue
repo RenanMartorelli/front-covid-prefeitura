@@ -230,7 +230,7 @@ export default {
     //   }
     // }
     async getDados () {
-      const response = await this.axios.get('/admin/estatistica')
+      const response = await this.axios.get('/estatistica')
       response.data.forEach(element => {
         element.dataContagem = date.formatDate(element.dataContagem, 'DD/MM/YYYY')
       })

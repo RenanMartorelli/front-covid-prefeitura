@@ -134,15 +134,15 @@ export default {
       confSenha: {},
       optNivelAcesso: [
         {
-          value: 1,
+          value: 'Administrador',
           label: 'Adminstrador'
         },
         {
-          value: 2,
+          value: 'Operador de dados',
           label: 'Operador de dados'
         },
         {
-          value: 3,
+          value: 'Operador de notícias',
           label: 'Operador de notícias'
         }
       ]
@@ -154,8 +154,6 @@ export default {
         this.acao = 'Editar'
         const response = await this.axios.get(`/admin/usuario/${this.$route.query.id}`)
         this.usuario = response.data
-        this.usuario.nivelAcesso = parseInt(this.usuario.nivelAcesso)
-        // TODO Pega dados da pessoa da API
       }
     },
     reconfSenhaModal () {

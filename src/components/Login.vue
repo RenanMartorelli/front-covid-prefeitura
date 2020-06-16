@@ -8,22 +8,22 @@
         <q-card class="my-card card-login">
           <q-card-section class="q-px-lg row justify-center">
             <div class="col-6 q-pt-xl justify-center">
-              <q-img class="logo-principal" src="../assets/pref_maua.png"></q-img>
+              <q-img class="logo-principal" src="../assets/logo_lliege_4.png"></q-img>
             </div>
           </q-card-section>
           <q-card-section class="q-px-lg row justify-center">
-            <h5 class="q-my-none">Prefeitura de Mauá</h5>
+            <h5 class="q-my-none">Prefeitura de LLIÉGE</h5>
             <h6 class="q-my-none text-center">Painel de acompanhamento de casos COVID-19.</h6>
           </q-card-section>
           <q-card-section class="q-pt-none q-pb-xl justify-center">
             <div class="row justify-center q-py-md">
               <div class="col-10">
-                <q-input dense filled v-model="usuario" type="text" label="Usuário" />
+                <q-input dense filled v-model="login.usuario" type="text" label="Usuário" />
               </div>
             </div>
             <div class="row justify-center q-py-md">
               <div class="col-10">
-                <q-input dense filled v-model="senha" :type="isPwd ? 'password' : 'text'" label="Senha">
+                <q-input dense filled v-model="login.senha" :type="isPwd ? 'password' : 'text'" label="Senha">
                   <template v-slot:append>
                     <q-icon
                       :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -48,7 +48,7 @@
                 <q-btn
                   class="rounded-button full-width"
                   color="primary"
-                  @click="login"
+                  @click="logar"
                   label="Entrar"
                 />
               </div>
@@ -60,18 +60,34 @@
   </div>
 </template>
 <script>
+// import store from '../store'
 export default {
   name: 'Login',
   data () {
     return {
-      usuario: '',
-      senha: '',
+      login: {
+        usuario: '',
+        senha: ''
+      },
       isPwd: true
     }
   },
   methods: {
-    login () {
-      console.log('Login!')
+    async logar () {
+      let response
+      try {
+        response = await this.axios.post('/login', this.login)
+      } catch (e) {
+        this.$swal({
+          title: 'Falha ao relizar o login',
+          text: 'Usuário ou senha incorretos',
+          type: 'error'
+        })
+      }
+
+      // eslint-disable-next-line no-undef
+      this.$store.dispatch('logar', response.data)
+      // eslint-disable-next-line no-undef
       this.$swal({
         title: 'Login realizado com sucesso',
         text: 'Você será redirecionado para o portal',
@@ -86,7 +102,8 @@ export default {
         text: 'Uma mensagem será enviada para o administrador do sistema para que sua senha seja reconfigurada',
         input: 'text',
         inputPlaceholder: 'Digite o seu usuário'
-      }).then(email => {
+      }).then(async usuario => {
+        await this.axios.post('/usuario/requisitar-troca-senha', { usuario: usuario })
         this.$swal({
           type: 'info',
           text: 'O administrador do sistema foi informado, aguarde o contato deste.'
